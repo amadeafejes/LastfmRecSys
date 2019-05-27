@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="fav">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <link rel="stylesheet" type="text/css" href="resources/styles.css"/>
+            <title>Song lists</title>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+        <div class="ui-grid">
+        <p:layout fullPage="true">
+            
+             <p:layoutUnit position="north">
+                
+                <h:form>
+                 
+                <p:breadCrumb>
+            
+                    <p:menuitem value="Users" action="#{list.logoutUser}" />
+                    <p:menuitem value="Songs of #{list.actualUser.userid}" url="#" />
+        
+                </p:breadCrumb>
+                     
+                </h:form>
+
+            </p:layoutUnit>
+                         
+            <p:layoutUnit position="west" header="Favorite songs" class="ui-grid-col-6">
+                <h:form id="favForm"> 
+
+                    <p:accordionPanel value="#{list.favSongList}" var="fav" multiple="true" >
+                        <p:tab title="#{fav.traname} (#{fav.artname})" >
+                            <h:panelGrid columns="2" cellpadding="5">
+
+                                <h:outputText value="Number of listenings"/>
+                                <h:outputText value="#{fav.counter}"/>
+
+                                <h:outputText value="Title"/>
+                                <h:outputText value="#{fav.traname}"/>
+
+                                <h:outputText value="Last.fm track id"/>
+                                <h:outputText value="#{fav.traid}"/>
+
+                                <h:outputText value="Artist"/>
+                                <h:outputText value="#{fav.artname}"/>
+
+                                <h:outputText value="Last.fm artist id"/>
+                                <h:outputText value="#{fav.artid}"/>
+
+
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+                </h:form>
+
+            </p:layoutUnit>
+                             
+            <p:layoutUnit position="center" header="Recommended songs" class="ui-grid-col-6">
+                <h:form id="recForm"> 
+
+                    <p:accordionPanel value="#{list.recSongList}" var="rec" multiple="true">
+                        <p:tab title="#{rec.traname} (#{rec.artname})">
+                            <h:panelGrid columns="2" cellpadding="5">
+
+                                <h:outputText value="Compatibility (%)"/>
+                                <h:outputText value="#{rec.comp}"/>
+
+                                <h:outputText value="Title"/>
+                                <h:outputText value="#{rec.traname}"/>
+
+                                <h:outputText value="Last.fm track id"/>
+                                <h:outputText value="#{rec.traid}"/>
+
+                                <h:outputText value="Artist"/>
+                                <h:outputText value="#{rec.artname}"/>
+
+                                <h:outputText value="Last.fm artist id"/>
+                                <h:outputText value="#{rec.artid}"/>
+
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+
+                </h:form>
+
+            </p:layoutUnit>
+                      
+        </p:layout>
+</div>
+    </h:body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="fav">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <link rel="stylesheet" type="text/css" href="resources/styles.css"/>
+            <title>User login</title>
+        </f:facet>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
+    </h:head>
+
+    <h:body>
+
+        <p:layout fullPage="true">
+    
+            <p:layoutUnit position="center">
+                
+                <h:form>
+                    
+                <p:growl id="msgs" showDetail="false" />
+                    
+                <h:outputText value="Song recommender - from your Last.fm listenings" />
+                <p:separator />
+                <p:outputLabel for="userLogin" value="Choose a user" />
+                <p:selectOneListbox id="userLogin" value="#{login.selectedUser}" var="u" filter="true" filterMatchMode="contains" converter="userConverter"  required="true">
+                    <f:selectItems value="#{login.userList}" var="actUser" itemLabel="#{actUser.userid}" itemValue="#{actUser}" />
+
+                    <p:column>
+                        <h:outputText value="#{u.userid}" />
+                    </p:column>
+                </p:selectOneListbox>
+                
+                <br/>
+                
+                <p:commandButton value="Submit" icon="ui-icon-check" action="#{login.loginUser}" ajax="false" update="msgs"/>
+                
+                </h:form>
+
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+
+</html>
