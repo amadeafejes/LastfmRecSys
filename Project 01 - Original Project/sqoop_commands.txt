@@ -1,0 +1,43 @@
+sqoop export --connect "jdbc:mysql://127.0.0.1:3306/lastfm_recommender" \
+       --username root \
+       --password root \
+       --table users \
+       --staging-table staging_users \
+       --export-dir /user/cloudera/lastfm_output/users.tsv \
+       --input-fields-terminated-by '\t' \
+       --input-lines-terminated-by '\n' \
+       --batch
+
+
+
+sqoop export --connect "jdbc:mysql://127.0.0.1:3306/lastfm_recommender" \
+       --username root \
+       --password root \
+       --table tracks \
+       --staging-table staging_tracks \
+       --export-dir /user/cloudera/lastfm_output/unique_tracks.tsv \
+       --input-fields-terminated-by '\t' \
+       --input-lines-terminated-by '\n' \
+       --batch
+
+
+sqoop export --connect "jdbc:mysql://127.0.0.1:3306/lastfm_recommender" \
+       --username root \
+       --password root \
+       --table fav_tracks \
+       --staging-table staging_fav_tracks \
+       --export-dir /user/cloudera/lastfm_output/fav_tracks.tsv \
+       --input-fields-terminated-by '\t' \
+       --input-lines-terminated-by '\n' \
+       --batch
+
+
+sqoop export --connect "jdbc:mysql://127.0.0.1:3306/lastfm_recommender" \
+       --username root \
+       --password root \
+       --table rec_tracks \
+       --staging-table staging_rec_tracks \
+       --export-dir /user/cloudera/lastfm_output/rec_tracks/*.tsv \
+       --input-fields-terminated-by '\t' \
+       --input-lines-terminated-by '\n' \
+       --batch
