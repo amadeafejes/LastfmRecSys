@@ -169,4 +169,71 @@ val rank = 50
 val iterations = 10
 val lambda = 0.01
 val alpha = 1.0
+
+//function for counting more error and rmse between the given parameter ranges
+def countRMSEErrorInBlock(rankMin:Double, rankMax:Double, iterationsMin:Double, iterationsMax:Double, lambdaMin:Double, lambdaMax:Double, alphaMin:Double, alphaMax:Double){
+
+    val rankStep = 20
+    val iterationsStep = 2
+    val lambdaStep = 0.002
+    val alphaStep = 0.1
+	
+	for (r <- rankMin to rankMax by rankStep){
+        for (i <- iterationsMin to iterationsMax by iterationsStep){
+            for (l <- lambdaMin to lambdaMax by lambdaStep){
+                for (a <- alphaMin to alphaMax by alphaStep){
+                    //call rmse method
+                    val rmse = countRMSE(ratings, r.toInt, i.toInt, l, a)
+                    val rmseTrain = countRMSE(trainRatings, r.toInt, i.toInt, l, a)
+                    val rmseTest = countRMSE(testRatings, r.toInt, i.toInt, l, a)
+                    val error = math.abs(rmseTrain - rmseTest)
+                    
+                    val resultString = error + "\t" + rmse + "\t" + r + "\t" + i + "\t" + l + "\t" + a
+                    
+                    println(resultString)
+				}
+            }
+        }
+    }
+}
+
+//example calls of the above function
+//only rank changes
+countRMSEErrorInBlock(10, 120, iterations, iterations, lambda, lambda, alpha, alpha)
+//only iterations changes
+countRMSEErrorInBlock(rank, rank, 6, 17, lambda, lambda, alpha, alpha)
+//only lambda changes
+countRMSEErrorInBlock(rank, rank, iterations, iterations, 0.002, 0.024, alpha, alpha)
+//only alpha changes
+countRMSEErrorInBlock(rank, rank, iterations, iterations, lambda, lambda, 0.4, 1.5)
+
+
+////generate top k recommendations for all users and save the results into files
+
+val model = ALS.trainImplicit(ratings, rank, iterations, lambda, alpha)
+
+val ratingValues = model.userFeatures.map( r => r._2 ).flatMap( r => r)
+val maxValue = ratingValues.max()
+val avgValue = ratingValues.sum/ratingValues.count
+val percentageUpper = (maxValue - avgValue)/50
+val percentageLower = avgValue/50
+
+val userIDs = ratingData.map(t => t._1.toInt ).distinct()
+userIDs.count
+userIDs.take(5)
+val K=10
+val folder = "hdfs://127.0.0.1/user/cloudera/lastfm_output/rec_tracks/"
+val fileExt = ".tsv"
+
+val recs =  userIDs.collect().foreach(
+      
+      userID => sc.parallelize( model.recommendProducts(userID, K).map(r => (r.user + "\t" + r.product + "\t" + 
+      (
+      //count percentage value from rating
+      if(r.rating >= avgValue) (50 + (r.rating/percentageUpper))
+      else (50 - (r.rating/percentageLower))
+      )
+       ) ) ).saveAsTextFile(folder + userID + fileExt)
+    
+)
 ```
