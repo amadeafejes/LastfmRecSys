@@ -1,5 +1,5 @@
 
-val rawListenings = sc.textFile("listenings.tsv")
+val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/output_files/listenings.tsv")
 rawListenings.first
 
 val n = 10
@@ -28,5 +28,5 @@ val topNListenedTracksForUsersFormatted = topNListenedTracksForUsers.map(  x => 
 topNListenedTracksForUsersFormatted.take(20)
 topNListenedTracksForUsersFormatted.count
  
-val favsFile = "fav_tracks.tsv"
+val favsFile = "gs://amislastfmrecsys01.appspot.com/output_files/fav_tracks.tsv"
 topNListenedTracksForUsersFormatted.saveAsTextFile(favsFile)

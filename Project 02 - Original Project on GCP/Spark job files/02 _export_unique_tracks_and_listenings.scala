@@ -1,5 +1,5 @@
 
-val rawListenings = sc.textFile("userid-timestamp-artid-artname-traid-traname.tsv")
+val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/lastfm-dataset-1K/userid-timestamp-artid-artname-traid-traname.tsv")
 
 case class Listening(userid:String,timestamp:String,artid:String,artname:String,traid:String,traname:String)
 val listeningObjects = rawListenings.map(_.split("\t")).map(s => Listening(s(0),s(1),s(2),s(3),s(4),s(5))).filter(_.traid != "")
@@ -29,7 +29,7 @@ val indexedListenings =
     (r._1 + "\t" + convertUserId(e.userid) + "\t" + e.timestamp)) ) )
     
 
-val listeningsFile = "listenings.tsv"
+val listeningsFile = "gs://amislastfmrecsys01.appspot.com/output_files/listenings.tsv"
 val listeningsToSave = indexedListenings.flatMap(r => r)
 listeningsToSave.count
 listeningsToSave.saveAsTextFile(listeningsFile)

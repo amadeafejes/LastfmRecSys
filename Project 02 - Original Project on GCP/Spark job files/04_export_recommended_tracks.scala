@@ -1,5 +1,5 @@
 
-val rawListenings = sc.textFile("listenings.tsv")
+val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/output_files/listenings.tsv")
 
 case class SimpleListening(userid:String, traid:String, timestamp:String)
 val rawTracks = rawListenings.map(_.split("\t")).map(s => SimpleListening(s(1), s(0), s(2)))
@@ -95,7 +95,7 @@ val userIDs = ratingData.map(t => t._1.toInt ).distinct()
 userIDs.count
 userIDs.take(5)
 val K=10
-val folder = "rec_tracks/"
+val folder = "gs://amislastfmrecsys01.appspot.com/output_files/rec_tracks"
 val fileExt = ".tsv"
 
 val recs =  userIDs.collect().foreach(
