@@ -14,10 +14,10 @@ val uniqueTracksMap = listeningObjects.map(s => (s.traid, s)).combineByKey(
 uniqueTracksMap.first()
 uniqueTracksMap.count
 
-val uniqueTracks = uniqueTracksMap.map( r => (r._1, r._2(0)) ).map( r => (r._1 + "\t" + r._2.traid + "\t" + r._2.traname + "\t" + r._2.artid + "\t" + r._2.artname) )
+val uniqueTracks = uniqueTracksMap.map( r => (r._1, r._2(0)) ).map( r => (r._1 + "," + r._2.traid + "," + r._2.traname + "," + r._2.artid + ", + r._2.artname) )
 uniqueTracks.first()
 
-val tracksFile = "unique_tracks.tsv"
+val tracksFile = "unique_tracks.csv"
 uniqueTracks.saveAsTextFile(tracksFile)
 
 def convertUserId(tag: String):Int = {
@@ -26,10 +26,10 @@ def convertUserId(tag: String):Int = {
 
 val indexedListenings = 
     uniqueTracksMap.map( r => (r._2.map(e =>  
-    (r._1 + "\t" + convertUserId(e.userid) + "\t" + e.timestamp)) ) )
+    (r._1 + "," + convertUserId(e.userid) + "," + e.timestamp)) ) )
     
 
-val listeningsFile = "gs://amislastfmrecsys01.appspot.com/output_files/listenings.tsv"
+val listeningsFile = "gs://amislastfmrecsys01.appspot.com/output_files/listenings.csv"
 val listeningsToSave = indexedListenings.flatMap(r => r)
 listeningsToSave.count
 listeningsToSave.saveAsTextFile(listeningsFile)

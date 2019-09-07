@@ -1,10 +1,10 @@
 
-val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/output_files/listenings.tsv")
+val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/output_files/listenings.csv")
 rawListenings.first
 
 val n = 10
 case class SimpleListening(userid:String, traid:String, timestamp:String)
-val rawTracks = rawListenings.map(_.split("\t")).map(s => SimpleListening(s(1), s(0), s(2)))
+val rawTracks = rawListenings.map(_.split(",")).map(s => SimpleListening(s(1), s(0), s(2)))
 rawTracks.first
 rawTracks.count
 rawTracks.take(5)
@@ -24,9 +24,9 @@ val topNListenedTracksForUsers = countedTracks.map(s => (s._1._1, (s._1._2, s._2
 topNListenedTracksForUsers.take(20)
 topNListenedTracksForUsers.count
 
-val topNListenedTracksForUsersFormatted = topNListenedTracksForUsers.map(  x => ( x._1 + "\t" + x._2._1 + "\t" + x._2._2 ) )
+val topNListenedTracksForUsersFormatted = topNListenedTracksForUsers.map(  x => ( x._1 + "," + x._2._1 + "," + x._2._2 ) )
 topNListenedTracksForUsersFormatted.take(20)
 topNListenedTracksForUsersFormatted.count
  
-val favsFile = "gs://amislastfmrecsys01.appspot.com/output_files/fav_tracks.tsv"
+val favsFile = "gs://amislastfmrecsys01.appspot.com/output_files/fav_tracks.csv"
 topNListenedTracksForUsersFormatted.saveAsTextFile(favsFile)

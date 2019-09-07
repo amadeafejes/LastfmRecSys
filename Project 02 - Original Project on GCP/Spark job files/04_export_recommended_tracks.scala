@@ -1,8 +1,8 @@
 
-val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/output_files/listenings.tsv")
+val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/output_files/listenings.csv")
 
 case class SimpleListening(userid:String, traid:String, timestamp:String)
-val rawTracks = rawListenings.map(_.split("\t")).map(s => SimpleListening(s(1), s(0), s(2)))
+val rawTracks = rawListenings.map(_.split(",")).map(s => SimpleListening(s(1), s(0), s(2)))
 val userTrackPairs = rawTracks.map( r => (r.userid, r.traid) )
 val countedTrackMap = userTrackPairs.map(s => (s,1))
 val countedTracks = countedTrackMap.reduceByKey(_ + _)
@@ -66,7 +66,7 @@ def countRMSEErrorInBlock(rankMin:Double, rankMax:Double, iterationsMin:Double, 
                     val rmseTest = countRMSE(testRatings, r.toInt, i.toInt, l, a)
                     val error = math.abs(rmseTrain - rmseTest)
                     
-                    val resultString = error + "\t" + rmse + "\t" + r + "\t" + i + "\t" + l + "\t" + a
+                    val resultString = error + "," + rmse + "," + r + "," + i + "," + l + "," + a
                     
                     println(resultString)
 				}
@@ -96,11 +96,11 @@ userIDs.count
 userIDs.take(5)
 val K=10
 val folder = "gs://amislastfmrecsys01.appspot.com/output_files/rec_tracks"
-val fileExt = ".tsv"
+val fileExt = ".csv"
 
 val recs =  userIDs.collect().foreach(
       
-      userID => sc.parallelize( model.recommendProducts(userID, K).map(r => (r.user + "\t" + r.product + "\t" + 
+      userID => sc.parallelize( model.recommendProducts(userID, K).map(r => (r.user + "," + r.product + "," + 
       (
       if(r.rating >= avgValue) (50 + (r.rating/percentageUpper))
       else (50 - (r.rating/percentageLower))
