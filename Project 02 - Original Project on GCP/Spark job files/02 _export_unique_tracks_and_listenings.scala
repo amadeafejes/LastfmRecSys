@@ -17,7 +17,7 @@ uniqueTracksMap.count
 val uniqueTracks = uniqueTracksMap.map( r => (r._1, r._2(0)) ).map( r => (r._1 + "," + r._2.traid + "," + r._2.traname + "," + r._2.artid + ", + r._2.artname) )
 uniqueTracks.first()
 
-val tracksFile = "unique_tracks.csv"
+val tracksFile = "gs://amislastfmrecsys01.appspot.com/output_files/unique_tracks.csv"
 uniqueTracks.saveAsTextFile(tracksFile)
 
 def convertUserId(tag: String):Int = {
