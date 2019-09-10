@@ -22,10 +22,19 @@ Run scala spark jobs on dataproc: reads from Storage writes to Storage or cloud 
 
 Compared to Project 01 this project has additional tasks to solve due to cloud specific requirements.
 
-## Cloud SQL only accepts csv files as input files
+### Cloud SQL only accepts csv files as input files
 
 The original lastfm-dataset-1K contains tsv files and tsv file format was used in Project 01 for output files too. The purpose of the output files is to serve as input files for the MySQL database. As Google Data Cloud's SQL service only lets csv files as source some changes are needed.
 
-### Modify file endings
+#### Modify file endings
 
 Change Google Storage file paths to generate csv files not tsv-s. Also replace '\t' separator characters with commas.
+
+#### Handle columns that can contain a comma character
+
+In Project 01 there was another reason to use tsv file format everywere and this was the input data. Comma is included in several fields in the raw tsv files so it was much more simplier not change to csv file format. Moving to GCP now requires to handle these fields to keep the data well-structured and free from errors.
+
+Fields that should be handled:
+* registered column in userid-profile.tsv for example "Aug 13, 2006"
+* artist name (artname) in userid-timestamp-artid-artname-traid-traname.tsv for example "Blood, Sweat & Tears"
+* song title (traname) in userid-timestamp-artid-artname-traid-traname.tsv for example "Boy, Boy, Boy (Switch Remix)"
