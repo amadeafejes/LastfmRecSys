@@ -2,7 +2,7 @@
 val rawListenings = sc.textFile("gs://amislastfmrecsys01.appspot.com/lastfm-dataset-1K/userid-timestamp-artid-artname-traid-traname.tsv")
 
 case class Listening(userid:String,timestamp:String,artid:String,artname:String,traid:String,traname:String)
-val listeningObjects = rawListenings.map(_.split("\t")).map(s => Listening(s(0),s(1),s(2),s(3),s(4),s(5))).filter(_.traid != "")
+val listeningObjects = rawListenings.map(_.split("\t")).map(s => Listening(s(0),s(1),s(2),'"' + s(3) + '"',s(4),'"' + s(5) + '"')).filter(_.traid != "")
 listeningObjects.first()
 listeningObjects.count
 
