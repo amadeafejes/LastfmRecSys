@@ -11,10 +11,10 @@ def convertUserId(tag: String):Int = {
 	return tag.substring(5).toInt
 }
 
-val users = filteredData.map(s => (convertUserId(s.substring(0, 11)) + '\t' + s))
+val users = filteredData.map(s => (convertUserId(s.substring(0, 11)) + "\t" + s))
 users.first
 
 val editedUsers = users.map(s => s.replace(',', '.')).map(s => s.replace('\t', ','))
 editedUsers.first
 
-users.saveAsTextFile(file)
+editedUsers.saveAsTextFile(file)
