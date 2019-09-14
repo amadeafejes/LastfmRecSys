@@ -14,7 +14,7 @@ val uniqueTracksMap = listeningObjects.map(s => (s.traid, s)).combineByKey(
 uniqueTracksMap.first()
 uniqueTracksMap.count
 
-val uniqueTracks = uniqueTracksMap.map( r => (r._1, r._2(0)) ).map( r => (r._1 + "," + r._2.traid + "," + r._2.traname + "," + r._2.artid + ", + r._2.artname) )
+val uniqueTracks = uniqueTracksMap.map( r => (r._1, r._2(0)) ).map( r => (r._1 + "," + r._2.traid + "," + r._2.traname + "," + r._2.artid + "," + r._2.artname) )
 uniqueTracks.first()
 
 val tracksFile = "gs://amislastfmrecsys01.appspot.com/output_files/unique_tracks.csv"
