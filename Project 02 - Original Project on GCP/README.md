@@ -38,3 +38,6 @@ Fields that should be handled:
 * registered column in userid-profile.tsv for example "Aug 13, 2006"
 * artist name (artname) in userid-timestamp-artid-artname-traid-traname.tsv for example "Blood, Sweat & Tears"
 * song title (traname) in userid-timestamp-artid-artname-traid-traname.tsv for example "Boy, Boy, Boy (Switch Remix)"
+
+### Merge csv files which contain favorite tracks data
+Unfortunately the outout of the machine learning method is a single file per call. As there are 1000 users in the system 1000 files are created. This is not optimal when importing these csv files to the MySQL database, it would be great if these records are contained by a single csv file.
